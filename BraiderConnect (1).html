@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>BraiderConnect — Nairobi's #1 Braiding Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:#FDF8F3;color:#2C2C2C;overflow-x:hidden;}
+:root{
+  --rose:#E8A0A8;--rose-dark:#C8697A;--rose-pale:#F7DEE2;
+  --lavender:#C4B5D6;--lavender-pale:#EDE7F6;
+  --cream:#FDF8F3;--charcoal:#2C2C2C;--gray:#7A7A7A;--light:#F0EDE8;
+  --gold:#C9A96E;
+  --shadow-sm:0 4px 16px rgba(200,105,122,0.10);
+  --shadow-md:0 8px 32px rgba(200,105,122,0.15);
+  --shadow-lg:0 20px 56px rgba(200,105,122,0.20);
+  --radius-lg:24px;
+}
+::-webkit-scrollbar{width:6px;}
+::-webkit-scrollbar-track{background:var(--rose-pale);}
+::-webkit-scrollbar-thumb{background:var(--rose);border-radius:3px;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.fade-up{animation:fadeUp 0.6s ease both;}
+.page{display:none;min-height:100vh;}
+.page.active{display:block;}
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:8px;border:none;border-radius:50px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;font-size:14px;transition:all 0.28s ease;white-space:nowrap;}
+.btn-primary{background:linear-gradient(135deg,#E8A0A8,#C8697A);color:#fff;padding:12px 28px;box-shadow:0 4px 18px rgba(200,105,122,0.35);}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(200,105,122,0.45);}
+.btn-outline{background:transparent;color:var(--rose-dark);border:1.5px solid var(--rose);padding:11px 26px;}
+.btn-outline:hover{background:var(--rose-pale);}
+.btn-sm{padding:8px 18px;font-size:12px;}
+.btn-white{background:#fff;color:var(--rose-dark);box-shadow:var(--shadow-sm);}
+.btn-white:hover{transform:translateY(-2px);}
+/* FORMS */
+input,select,textarea{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--charcoal);background:#fff;border:1.5px solid var(--lavender-pale);border-radius:12px;padding:12px 16px;width:100%;outline:none;transition:border-color 0.2s;}
+input:focus,select:focus{border-color:var(--rose);}
+label{font-size:13px;color:var(--gray);display:block;margin-bottom:6px;}
+/* TAGS */
+.tag{display:inline-flex;align-items:center;background:var(--rose-pale);color:var(--rose-dark);border-radius:20px;padding:4px 12px;font-size:12px;font-weight:500;}
+.badge-home{background:linear-gradient(135deg,#C4B5D6,#9C88B8);color:#fff;border-radius:20px;padding:3px 10px;font-size:11px;font-weight:700;}
+.badge-popular{background:linear-gradient(135deg,#C9A96E,#E8C99A);color:#fff;border-radius:20px;padding:3px 12px;font-size:11px;font-weight:700;}
+/* CARDS */
+.card{background:#fff;border-radius:var(--radius-lg);border:1px solid var(--rose-pale);overflow:hidden;box-shadow:var(--shadow-sm);transition:transform 0.3s ease,box-shadow 0.3s ease;}
+.card:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg);}
+/* NAVBAR */
+#navbar{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 24px;transition:all 0.3s ease;}
+#navbar.scrolled{background:rgba(253,248,243,0.97);backdrop-filter:blur(14px);border-bottom:1px solid var(--rose-pale);}
+.nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;height:68px;gap:32px;}
+.nav-logo{display:flex;align-items:center;gap:10px;cursor:pointer;text-decoration:none;}
+.nav-logo-icon{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#E8A0A8,#C4B5D6);display:flex;align-items:center;justify-content:center;font-size:16px;color:#fff;flex-shrink:0;}
+.nav-logo-text{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--rose-dark);}
+.nav-logo-text span{color:var(--lavender);}
+.nav-links{display:flex;gap:28px;margin-left:auto;}
+.nav-link{cursor:pointer;font-size:14px;font-weight:400;color:var(--charcoal);border-bottom:2px solid transparent;padding-bottom:3px;transition:all 0.2s;background:none;border-top:none;border-left:none;border-right:none;font-family:'DM Sans',sans-serif;}
+.nav-link:hover,.nav-link.active{color:var(--rose-dark);border-bottom-color:var(--rose);font-weight:600;}
+.nav-actions{display:flex;gap:12px;align-items:center;margin-left:auto;}
+/* HAMBURGER */
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;}
+.hamburger span{display:block;width:24px;height:2px;background:var(--rose-dark);border-radius:2px;transition:all 0.3s;}
+.mobile-menu{display:none;position:fixed;top:68px;left:0;right:0;background:rgba(253,248,243,0.98);backdrop-filter:blur(14px);border-bottom:1px solid var(--rose-pale);flex-direction:column;padding:16px 24px 24px;gap:4px;z-index:999;}
+.mobile-menu.open{display:flex;}
+.mobile-menu-link{padding:14px 0;font-size:16px;font-weight:500;color:var(--charcoal);border:none;background:none;text-align:left;cursor:pointer;font-family:'DM Sans',sans-serif;border-bottom:1px solid var(--light);transition:color 0.2s;width:100%;}
+.mobile-menu-link:hover{color:var(--rose-dark);}
+/* NAV USER CHIP */
+.nav-user-chip{display:none;align-items:center;gap:8px;background:var(--rose-pale);border-radius:50px;padding:6px 14px 6px 6px;cursor:pointer;border:1px solid var(--rose);}
+.nav-user-avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#E8A0A8,#C4B5D6);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:12px;}
+.nav-user-name{font-size:13px;font-weight:600;color:var(--rose-dark);}
+/* HERO */
+#hero{min-height:100vh;padding-top:68px;background:linear-gradient(145deg,#FDF8F3 0%,#F7DEE2 45%,#EDE7F6 100%);display:flex;align-items:center;position:relative;overflow:hidden;}
+.hero-blob{position:absolute;border-radius:50%;pointer-events:none;}
+.hero-orb{position:absolute;border-radius:50%;overflow:hidden;border:3px solid rgba(232,160,168,0.5);box-shadow:0 12px 32px rgba(200,105,122,0.18);}
+.hero-orb img{width:100%;height:100%;object-fit:cover;}
+.hero-inner{max-width:1200px;margin:0 auto;padding:60px 24px;position:relative;z-index:2;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.82);border-radius:50px;padding:6px 16px;border:1px solid var(--rose-pale);font-size:12px;font-weight:700;color:var(--rose-dark);letter-spacing:1px;margin-bottom:28px;}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(42px,8vw,80px);font-weight:300;line-height:1.08;color:var(--charcoal);margin-bottom:24px;}
+.hero-title em{color:var(--rose-dark);font-style:italic;}
+.hero-desc{font-size:17px;color:var(--gray);line-height:1.75;margin-bottom:36px;max-width:480px;}
+.hero-ctas{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:48px;}
+.hero-stats{display:flex;gap:36px;flex-wrap:wrap;}
+.hero-stat-num{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:600;color:var(--rose-dark);}
+.hero-stat-label{font-size:12px;color:var(--gray);font-weight:500;}
+/* AI WIDGET */
+.ai-widget{margin-top:56px;max-width:560px;background:rgba(255,255,255,0.93);border-radius:20px;padding:28px;border:1px solid var(--rose-pale);box-shadow:var(--shadow-md);backdrop-filter:blur(10px);}
+.ai-widget-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+.ai-icon{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#E8A0A8,#C4B5D6);display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;flex-shrink:0;}
+.ai-row{display:flex;gap:10px;flex-wrap:wrap;}
+.ai-row input{flex:1 1 220px;border-radius:50px;}
+.ai-result{margin-top:16px;padding:14px 16px;background:var(--rose-pale);border-radius:12px;font-size:13px;line-height:1.75;color:var(--charcoal);}
+.ai-loading{display:flex;align-items:center;gap:10px;color:var(--gray);font-size:13px;padding:10px 0;}
+.ai-spinner{width:18px;height:18px;border:2px solid var(--rose-pale);border-top-color:var(--rose-dark);border-radius:50%;animation:spin 0.8s linear infinite;}
+/* SECTIONS */
+.section{padding:80px 24px;}
+.section-inner{max-width:1100px;margin:0 auto;}
+.section-eyebrow{font-size:11px;font-weight:700;letter-spacing:3px;color:var(--rose);margin-bottom:12px;text-transform:uppercase;}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4.5vw,48px);color:var(--charcoal);margin-bottom:8px;}
+.section-title em{color:var(--rose-dark);font-style:italic;}
+.section-sub{color:var(--gray);font-size:15px;margin-bottom:48px;max-width:520px;}
+.section-center{text-align:center;}
+.section-center .section-sub{margin-left:auto;margin-right:auto;}
+/* GRIDS */
+.grid-braiders{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px;}
+.grid-styles{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:20px;}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:32px;}
+.grid-4{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;}
+.grid-salons{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:24px;}
+.grid-portfolio{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:14px;}
+/* BRAIDER CARD */
+.braider-card{cursor:pointer;}
+.braider-photo-wrap{position:relative;height:220px;overflow:hidden;}
+.braider-photo-wrap img{width:100%;height:100%;object-fit:cover;transition:transform 0.4s ease;}
+.braider-card:hover .braider-photo-wrap img{transform:scale(1.06);}
+.braider-status-badge{position:absolute;top:12px;right:12px;background:rgba(255,255,255,0.96);border-radius:20px;padding:4px 10px;font-size:11px;font-weight:700;}
+.braider-body{padding:18px 20px;}
+.braider-wait{margin-top:12px;padding:8px 12px;background:var(--cream);border-radius:10px;display:flex;justify-content:space-between;font-size:12px;color:var(--gray);}
+/* STEP CARDS */
+.step-card{text-align:center;}
+.step-num{font-family:'Cormorant Garamond',serif;font-size:72px;line-height:1;color:#F7DEE2;margin-bottom:8px;}
+.step-icon{font-size:36px;margin-bottom:12px;}
+/* TESTIMONIALS */
+.testimonial-card{background:#fff;border-radius:20px;padding:24px;box-shadow:var(--shadow-sm);}
+.testimonial-author{display:flex;align-items:center;gap:10px;margin-top:14px;}
+.testimonial-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#E8A0A8,#C4B5D6);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;}
+/* PROFILE */
+.profile-cover{height:180px;background:linear-gradient(135deg,#F7DEE2,#EDE7F6,#FBE8DC);}
+.profile-header{padding:0 28px 28px;margin-top:-58px;}
+.profile-avatar{width:112px;height:112px;border-radius:50%;object-fit:cover;border:4px solid #fff;box-shadow:var(--shadow-md);}
+/* STAT MINI */
+.stat-mini{background:var(--cream);border-radius:14px;padding:16px 14px;text-align:center;}
+.stat-mini-val{font-size:18px;font-weight:700;color:var(--charcoal);}
+.stat-mini-label{font-size:11px;color:var(--gray);margin-top:4px;}
+.stat-mini-icon{font-size:22px;margin-bottom:8px;height:28px;display:flex;align-items:center;justify-content:center;}
+/* REVIEW */
+.review-card{padding:14px 16px;background:var(--cream);border-radius:14px;display:flex;gap:12px;}
+.review-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#E8A0A8,#C4B5D6);flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;}
+/* FILTER */
+.filter-bar{background:#fff;border-radius:20px;padding:20px 24px;margin-bottom:32px;box-shadow:var(--shadow-sm);border:1px solid var(--rose-pale);display:flex;gap:14px;flex-wrap:wrap;align-items:center;}
+.filter-check{display:flex;align-items:center;gap:8px;cursor:pointer;font-size:14px;white-space:nowrap;}
+.filter-check input[type=checkbox]{width:auto;accent-color:var(--rose-dark);}
+/* PAGE HEADER */
+.page-header{text-align:center;padding-top:40px;margin-bottom:48px;}
+.page-header p{color:var(--gray);font-size:16px;max-width:520px;margin:0 auto;}
+/* BOOKING */
+.step-indicator{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:36px;}
+.step-dot{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;transition:all 0.3s;}
+.step-dot.active,.step-dot.done{background:linear-gradient(135deg,#E8A0A8,#C8697A);color:#fff;}
+.step-dot.pending{background:var(--light);color:var(--gray);}
+.step-line{width:44px;height:2px;background:var(--light);transition:background 0.3s;}
+.step-line.done{background:var(--rose);}
+.booking-panel{background:#fff;border-radius:20px;padding:24px;margin-bottom:20px;box-shadow:var(--shadow-sm);border:1px solid var(--rose-pale);}
+.booking-panel h3{font-size:17px;font-weight:600;color:var(--charcoal);margin-bottom:16px;}
+.service-option{padding:18px;border-radius:14px;border:2px solid var(--light);cursor:pointer;text-align:center;transition:all 0.22s;}
+.service-option.selected{border-color:var(--rose);background:var(--rose-pale);}
+.service-option .opt-icon{font-size:28px;margin-bottom:8px;height:36px;display:flex;align-items:center;justify-content:center;}
+.service-option .opt-label{font-weight:600;font-size:15px;color:var(--charcoal);}
+.service-option .opt-desc{font-size:12px;color:var(--gray);margin-top:4px;}
+.booking-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--light);font-size:14px;}
+.booking-row:last-child{border:none;}
+.booking-row-key{color:var(--gray);}
+.booking-row-val{font-weight:600;color:var(--charcoal);}
+.form-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+/* CONFIRMATION */
+.confirmation-card{background:#fff;border-radius:24px;padding:48px 40px;max-width:480px;margin:0 auto;text-align:center;box-shadow:var(--shadow-lg);animation:fadeUp 0.5s ease;}
+.conf-icon{font-size:64px;margin-bottom:20px;display:block;animation:float 3s ease-in-out infinite;}
+.conf-title{font-family:'Cormorant Garamond',serif;font-size:34px;color:var(--charcoal);margin-bottom:12px;}
+.conf-sub{color:var(--gray);margin-bottom:28px;line-height:1.7;}
+/* DASHBOARD */
+.dash-header{background:linear-gradient(135deg,#F7DEE2,#EDE7F6);border-radius:24px;padding:28px 32px;display:flex;gap:20px;align-items:center;flex-wrap:wrap;margin-bottom:32px;}
+.dash-avatar-big{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#E8A0A8,#C4B5D6);display:flex;align-items:center;justify-content:center;font-size:28px;color:#fff;font-weight:700;flex-shrink:0;}
+.dash-welcome{font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--charcoal);}
+.dash-sub{color:var(--gray);font-size:14px;margin-top:4px;}
+.tab-bar{display:flex;border-bottom:1px solid var(--light);}
+.tab-btn{flex:1;padding:16px;border:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:14px;cursor:pointer;color:var(--gray);transition:all 0.2s;}
+.tab-btn.active{background:var(--rose-pale);color:var(--rose-dark);font-weight:600;}
+.booking-list-item{display:flex;gap:16px;align-items:center;padding:16px 0;border-bottom:1px solid var(--light);flex-wrap:wrap;}
+.booking-list-item:last-child{border:none;}
+.booking-item-avatar{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#E8A0A8,#C4B5D6);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:16px;flex-shrink:0;}
+.booking-item-info{flex:1;}
+.booking-item-name{font-weight:600;font-size:15px;color:var(--charcoal);}
+.booking-item-sub{font-size:13px;color:var(--gray);}
+/* CTA */
+.cta-section{padding:80px 24px;background:linear-gradient(135deg,#C8697A,#C4B5D6);text-align:center;}
+.cta-title{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,5vw,52px);color:#fff;font-weight:300;margin-bottom:16px;}
+.cta-sub{color:rgba(255,255,255,0.85);font-size:17px;margin-bottom:36px;}
+.cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+.btn-white-outline{background:transparent;color:#fff;border:2px solid rgba(255,255,255,0.6);border-radius:50px;padding:14px 32px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:15px;cursor:pointer;transition:all 0.25s;}
+.btn-white-outline:hover{background:rgba(255,255,255,0.12);}
+/* AUTH MODAL */
+#auth-modal{display:none;position:fixed;inset:0;z-index:2000;background:rgba(44,44,44,0.55);backdrop-filter:blur(6px);align-items:flex-start;justify-content:center;padding:24px;overflow-y:auto;}
+#auth-modal.open{display:flex;}
+.auth-card{background:#fff;border-radius:24px;padding:40px 36px;width:100%;max-width:420px;box-shadow:0 24px 64px rgba(200,105,122,0.22);animation:fadeUp 0.4s ease both;position:relative;}
+.auth-logo{text-align:center;margin-bottom:28px;}
+.auth-logo-icon{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#E8A0A8,#C4B5D6);display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;margin:0 auto 12px;}
+.auth-title{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;color:var(--charcoal);margin-bottom:6px;}
+.auth-sub{font-size:13px;color:var(--gray);}
+.auth-tabs{display:flex;background:var(--cream);border-radius:50px;padding:4px;margin-bottom:28px;}
+.auth-tab{flex:1;border:none;background:transparent;border-radius:50px;padding:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;color:var(--gray);transition:all 0.25s;}
+.auth-tab.active{background:#fff;color:var(--rose-dark);font-weight:600;box-shadow:0 2px 8px rgba(200,105,122,0.15);}
+.auth-form{display:flex;flex-direction:column;gap:14px;}
+.auth-form input{border-radius:12px;}
+.auth-role-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.role-option{border:2px solid var(--light);border-radius:14px;padding:14px 10px;text-align:center;cursor:pointer;transition:all 0.22s;background:#fff;}
+.role-option:hover{border-color:var(--rose-pale);}
+.role-option.selected{border-color:var(--rose);background:var(--rose-pale);}
+.role-option .role-icon{font-size:24px;margin-bottom:6px;}
+.role-option .role-label{font-size:13px;font-weight:600;color:var(--charcoal);}
+.auth-error{background:#FFF0F0;color:#C0392B;border-radius:10px;padding:10px 14px;font-size:13px;display:none;}
+.auth-error.show{display:block;}
+.auth-switch{text-align:center;font-size:13px;color:var(--gray);margin-top:16px;}
+.auth-switch span{color:var(--rose-dark);font-weight:600;cursor:pointer;}
+.auth-switch span:hover{text-decoration:underline;}
+.auth-close{position:absolute;top:16px;right:20px;background:none;border:none;font-size:20px;cursor:pointer;color:var(--gray);}
+/* LIGHTBOX */
+#lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:3000;align-items:center;justify-content:center;padding:24px;}
+#lightbox.open{display:flex;}
+#lightbox img{max-width:90vw;max-height:85vh;border-radius:16px;object-fit:contain;}
+#lightbox-close{position:absolute;top:24px;right:24px;background:#fff;border:none;border-radius:50%;width:40px;height:40px;font-size:20px;cursor:pointer;}
+/* FOOTER */
+footer{background:var(--charcoal);color:rgba(255,255,255,0.65);padding:56px 24px 28px;}
+.footer-inner{max-width:1100px;margin:0 auto;}
+.footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:36px;margin-bottom:48px;}
+.footer-logo-text{font-family:'Cormorant Garamond',serif;font-size:24px;color:#fff;margin-bottom:14px;}
+.footer-col-title{color:#fff;font-weight:600;font-size:14px;margin-bottom:14px;}
+.footer-link{font-size:13px;margin-bottom:8px;cursor:pointer;}
+.footer-link:hover{color:#fff;}
+.footer-bottom{border-top:1px solid rgba(255,255,255,0.1);padding-top:24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:12px;}
+/* RESPONSIVE */
+@media(max-width:768px){
+  .nav-links{display:none;}
+  .nav-actions{gap:8px;}
+  .hamburger{display:flex;}
+  #nav-book-btn{padding:10px 16px;font-size:13px;}
+  .auth-card{padding:28px 20px;}
+  .dash-header{padding:20px;}
+  .confirmation-card{padding:32px 20px;}
+  .form-grid-2{grid-template-columns:1fr;}
+  #nav-signout-btn{padding:8px 12px;font-size:11px;}
+  #nav-user-chip{ display:none !important; }
+#nav-signout-btn{ display:inline-flex !important; padding:8px 14px; font-size:12px; }
+}
+@media(max-width:480px){
+  .grid-braiders{grid-template-columns:1fr;}
+  .grid-styles{grid-template-columns:1fr 1fr;}
+  .grid-4{grid-template-columns:1fr 1fr;}
+  #nav-book-btn{display:none;}
+  #nav-signout-btn{padding:8px 12px;font-size:11px;}
+  #nav-user-chip{ display:none !important; }
+#nav-signout-btn{ display:inline-flex !important; padding:8px 14px; font-size:12px; }
+}
+</style>
+</head>
+<body>
+
+<!-- LIGHTBOX -->
+<div id="lightbox" onclick="closeLightbox()">
+  <button id="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img id="lightbox-img" src="" alt="Portfolio photo"/>
+</div>
+
+<!-- AUTH MODAL -->
+<div id="auth-modal">
+  <div class="auth-card">
+    <button class="auth-close" onclick="closeAuth()">✕</button>
+    <div class="auth-logo">
+      <div class="auth-logo-icon">✦</div>
+      <div class="auth-title" id="auth-modal-title">Welcome Back</div>
+      <div class="auth-sub" id="auth-modal-sub">Sign in to your BraiderConnect account</div>
+    </div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tab-signin" onclick="switchAuthTab('signin')">Sign In</button>
+      <button class="auth-tab" id="tab-signup" onclick="switchAuthTab('signup')">Create Account</button>
+    </div>
+    <div class="auth-error" id="auth-error"></div>
+    <div id="signin-form" class="auth-form">
+      <input type="email" id="signin-email" placeholder="Email address"/>
+      <input type="password" id="signin-password" placeholder="Password"/>
+      <button class="btn btn-primary" style="width:100%;padding:14px;justify-content:center;" onclick="handleSignIn()">Sign In →</button>
+    </div>
+    <div id="signup-form" class="auth-form" style="display:none;">
+      <input type="text" id="signup-name" placeholder="Full name"/>
+      <input type="email" id="signup-email" placeholder="Email address"/>
+      <input type="tel" id="signup-phone" placeholder="Phone number"/>
+      <input type="password" id="signup-password" placeholder="Create a password (min 6 chars)"/>
+      <div>
+        <label style="margin-bottom:8px;">I am a...</label>
+        <div class="auth-role-row">
+          <div class="role-option selected" id="role-customer" onclick="selectRole('customer')"><div class="role-icon">👩</div><div class="role-label">Customer</div></div>
+          <div class="role-option" id="role-braider" onclick="selectRole('braider')"><div class="role-icon">💇</div><div class="role-label">Braider</div></div>
+        </div>
+      </div>
+      <button class="btn btn-primary" style="width:100%;padding:14px;justify-content:center;" onclick="handleSignUp()">Create Account →</button>
+    </div>
+    <div class="auth-switch" id="auth-switch-text">Don't have an account? <span onclick="switchAuthTab('signup')">Create one</span></div>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a class="nav-logo" onclick="showPage('landing')">
+      <div class="nav-logo-icon">✦</div>
+      <div class="nav-logo-text">Braider<span>Connect</span></div>
+    </a>
+    <div class="nav-links">
+      <button class="nav-link" data-page="browse" onclick="showPage('browse')">Browse</button>
+      <button class="nav-link" data-page="gallery" onclick="showPage('gallery')">Styles</button>
+      <button class="nav-link" data-page="salons" onclick="showPage('salons')">Salons</button>
+    </div>
+    <div class="nav-actions">
+      <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()"><span></span><span></span><span></span></button>
+      <button class="btn btn-outline" id="nav-signin-btn" onclick="openAuth('signin')">Sign In</button>
+      <button class="btn btn-primary" id="nav-book-btn" onclick="showPage('booking')">Book Now</button>
+      <div class="nav-user-chip" id="nav-user-chip" onclick="goToDashboard()">
+        <div class="nav-user-avatar" id="nav-avatar-letter">?</div>
+        <div class="nav-user-name" id="nav-user-display">Me</div>
+      </div>
+      <button class="btn btn-outline btn-sm" id="nav-signout-btn" style="display:none;" onclick="handleSignOut()">Sign Out</button>
+    </div>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobile-menu">
+  <button class="mobile-menu-link" onclick="closeMobileMenu();showPage('browse')">Browse Braiders</button>
+  <button class="mobile-menu-link" onclick="closeMobileMenu();showPage('gallery')">Styles</button>
+  <button class="mobile-menu-link" onclick="closeMobileMenu();showPage('salons')">Salons</button>
+  <button class="mobile-menu-link" onclick="closeMobileMenu();goToDashboard()">My Dashboard</button>
+  <button class="btn btn-primary" style="margin-top:12px;width:100%;padding:14px;justify-content:center;" onclick="closeMobileMenu();showPage('booking')">Book Now</button>
+</div>
+
+<!-- LANDING PAGE -->
+<div id="page-landing" class="page active">
+  <section id="hero">
+    <div class="hero-blob" style="width:340px;height:340px;top:8%;right:4%;background:radial-gradient(circle,rgba(232,160,168,0.22),transparent);animation:float 7s ease-in-out infinite;"></div>
+    <div class="hero-blob" style="width:240px;height:240px;bottom:14%;left:2%;background:radial-gradient(circle,rgba(196,181,214,0.20),transparent);animation:float 9s ease-in-out infinite 2s;"></div>
+    <div class="hero-orb" style="width:120px;height:120px;top:16%;right:9%;animation:float 5s ease-in-out infinite;"><img src="img/senegalese.jfif" alt=""/></div>
+    <div class="hero-orb" style="width:96px;height:96px;top:62%;right:3%;animation:float 7s ease-in-out infinite 1.5s;"><img src="img/Afro.jfif" alt=""/></div>
+    <div class="hero-orb" style="width:82px;height:82px;top:28%;right:28%;animation:float 6s ease-in-out infinite 0.8s;"><img src="img/lines.jfif" alt=""/></div>
+    <div class="hero-inner fade-up">
+      <div style="max-width:640px;">
+        <div class="hero-badge"> &nbsp; ✦NAIROBI'S #1 BRAIDING PLATFORM</div>
+        <h1 class="hero-title">Your Perfect<br><em>Braid</em> is<br>One Click Away</h1>
+        <p class="hero-desc">Connect with certified braiders near you. Book in-salon or request a braider to come to your home.</p>
+        <div class="hero-ctas">
+          <button class="btn btn-primary" style="font-size:15px;padding:14px 32px;" onclick="showPage('browse')">Find a Braider →</button>
+          <button class="btn btn-outline" style="font-size:15px;" onclick="showPage('gallery')">Explore Styles</button>
+        </div>
+        <div class="hero-stats">
+          <div><div class="hero-stat-num">500+</div><div class="hero-stat-label">Expert Braiders</div></div>
+          <div><div class="hero-stat-num">15K+</div><div class="hero-stat-label">Happy Clients</div></div>
+          <div><div class="hero-stat-num">4.9★</div><div class="hero-stat-label">Average Rating</div></div>
+        </div>
+      </div>
+      <div class="ai-widget">
+        <div class="ai-widget-header">
+          <div class="ai-icon">✦</div>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:var(--charcoal);">AI Style Advisor</div>
+            <!-- ⚠️ REPLACE WITH BACKEND LATER: connect to Claude API via POST /api/ai/style-advice -->
+            <div style="font-size:11px;color:var(--gray);">Tell us your preference</div>
+          </div>
+        </div>
+        <div class="ai-row">
+          <input id="hero-ai-input" type="text" placeholder='"low maintenance", "wedding", "natural look"...' onkeydown="if(event.key==='Enter')heroAI()"/>
+          <button class="btn btn-primary" onclick="heroAI()" style="border-radius:50px;">Get Style</button>
+        </div>
+        <div id="hero-ai-result"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="background:#fff;">
+    <div class="section-inner">
+      <div class="section-center"><div class="section-eyebrow">Trending Now</div><h2 class="section-title">Most <em>Loved</em> Styles</h2></div>
+      <div class="grid-styles" id="landing-styles"></div>
+      <div style="text-align:center;margin-top:36px;"><button class="btn btn-outline" onclick="showPage('gallery')">View All Styles →</button></div>
+    </div>
+  </section>
+
+  <section class="section" style="background:var(--cream);">
+    <div class="section-inner">
+      <div class="section-center"><div class="section-eyebrow">Top Rated</div><h2 class="section-title">Featured <em>Braiders</em></h2></div>
+      <div class="grid-braiders" id="landing-braiders"></div>
+      <div style="text-align:center;margin-top:36px;"><button class="btn btn-primary" onclick="showPage('browse')">Browse All Braiders →</button></div>
+    </div>
+  </section>
+
+  <section class="section" style="background:#fff;">
+    <div class="section-inner">
+      <div class="section-center"><div class="section-eyebrow">Simple Process</div><h2 class="section-title">How It <em>Works</em></h2><p class="section-sub">From browse to beautiful braids in minutes</p></div>
+      <div class="grid-3">
+        <div class="step-card"><div class="step-num">01</div><div style="font-size:36px;margin-bottom:12px;color:var(--rose-dark);"><i class="fa-solid fa-magnifying-glass"></i></div><div style="font-size:17px;font-weight:700;color:var(--charcoal);margin-bottom:10px;">Browse & Discover</div><p style="font-size:14px;color:var(--gray);line-height:1.75;">Find certified braiders near you. Filter by style, rating, price, or availability.</p></div>
+<div class="step-card"><div class="step-num">02</div><div style="font-size:36px;margin-bottom:12px;color:var(--rose-dark);"><i class="fa-solid fa-calendar-check"></i></div><div style="font-size:17px;font-weight:700;color:var(--charcoal);margin-bottom:10px;">Book Instantly</div><p style="font-size:14px;color:var(--gray);line-height:1.75;">Choose your style, date, and time. Pick in-salon or home service.</p></div>
+<div class="step-card"><div class="step-num">03</div><div style="font-size:36px;margin-bottom:12px;color:var(--rose-dark);"><i class="fa-solid fa-star"></i></div><div style="font-size:17px;font-weight:700;color:var(--charcoal);margin-bottom:10px;">Slay & Review</div><p style="font-size:14px;color:var(--gray);line-height:1.75;">Enjoy your beautiful braids and leave a review for your braider.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="background:linear-gradient(135deg,#F7DEE2,#EDE7F6);">
+    <div class="section-inner">
+      <div class="section-center"><h2 class="section-title">Happy <em>Clients</em></h2></div>
+      <div class="grid-3">
+        <div class="testimonial-card"><div style="color:var(--gold);font-size:16px;">★★★★★</div><p style="font-size:14px;line-height:1.8;color:var(--charcoal);margin-top:12px;">"BraiderConnect changed my life! I found the most talented braider right in my neighbourhood. My knotless braids have never looked this good!"</p><div class="testimonial-author"><div class="testimonial-avatar">F</div><strong style="font-size:14px;">Fatima M.</strong></div></div>
+        <div class="testimonial-card"><div style="color:var(--gold);font-size:16px;">★★★★★</div><p style="font-size:14px;line-height:1.8;color:var(--charcoal);margin-top:12px;">"I love the home service option. Amara came to my house and did perfect goddess locs. The service was outstanding from start to finish."</p><div class="testimonial-author"><div class="testimonial-avatar">W</div><strong style="font-size:14px;">Wanjiku N.</strong></div></div>
+        <div class="testimonial-card"><div style="color:var(--gold);font-size:16px;">★★★★★</div><p style="font-size:14px;line-height:1.8;color:var(--charcoal);margin-top:12px;">"The real-time salon availability feature is genius! I always know which salons aren't overcrowded. 10/10 recommend to every woman in Nairobi."</p><div class="testimonial-author"><div class="testimonial-avatar">A</div><strong style="font-size:14px;">Aisha K.</strong></div></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="cta-section">
+    <h2 class="cta-title">Ready to find your <em>perfect braid</em>?</h2>
+    <p class="cta-sub">Join thousands of happy clients across Nairobi.</p>
+    <div class="cta-btns">
+      <button class="btn btn-white" style="padding:14px 32px;font-size:15px;" onclick="showPage('browse')">Find a Braider</button>
+      <button class="btn-white-outline" onclick="openAuth('signup')">Create Account</button>
+    </div>
+  </div>
+</div>
+
+<!-- BROWSE PAGE -->
+<div id="page-browse" class="page" style="padding-top:90px;background:var(--cream);">
+  <div style="max-width:1200px;margin:0 auto;padding:0 24px 80px;">
+    <div class="page-header"><h1 class="section-title">Find Your <em>Perfect</em> Braider</h1><p>Browse certified professionals near you</p></div>
+    <div class="filter-bar">
+      <input id="search-input" type="text" placeholder="🔍 Search braider, style, location..." oninput="filterBraiders()" style="flex:1 1 240px;border-radius:50px;"/>
+      <select id="filter-status" onchange="filterBraiders()" style="flex:0 1 170px;border-radius:50px;"><option value="all">All Status</option><option value="available">🟢 Available</option><option value="busy">🟡 Busy</option><option value="full">🔴 Full</option></select>
+      <select id="filter-rating" onchange="filterBraiders()" style="flex:0 1 160px;border-radius:50px;"><option value="0">Any Rating</option><option value="4">4★ & above</option><option value="4.5">4.5★ & above</option></select>
+      <label class="filter-check"><input type="checkbox" id="filter-home" onchange="filterBraiders()"/> 🏠 Home Service Only</label>
+    </div>
+    <div style="font-size:13px;color:var(--gray);margin-bottom:20px;" id="browse-count"></div>
+    <div class="grid-braiders" id="browse-grid"></div>
+  </div>
+</div>
+
+<!-- GALLERY PAGE -->
+<div id="page-gallery" class="page" style="padding-top:90px;background:var(--cream);">
+  <div style="max-width:1100px;margin:0 auto;padding:0 24px 80px;">
+    <div class="page-header"><h1 class="section-title">Style <em>Gallery</em></h1><p>Browse trending and timeless braiding styles</p></div>
+    <div style="background:linear-gradient(135deg,#F7DEE2,#EDE7F6);border-radius:20px;padding:28px 32px;margin-bottom:48px;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;"><span style="font-size:20px;"><i class="fa-solid fa-star" style="color:var(--gold);"></i></span><h3 style="font-size:17px;font-weight:700;color:var(--charcoal);">AI Style Inspiration</h3></div>
+      <!-- ⚠️ REPLACE WITH BACKEND LATER: connect to Claude API via POST /api/ai/style-advice -->
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <input id="gallery-ai-input" type="text" placeholder='"office look", "low maintenance", "for a wedding"...' style="flex:1 1 260px;border-radius:50px;" onkeydown="if(event.key==='Enter')galleryAI()"/>
+        <button class="btn btn-primary" onclick="galleryAI()" style="border-radius:50px;">✦ Inspire Me</button>
+      </div>
+      <div id="gallery-ai-result"></div>
+    </div>
+    <div class="grid-styles" id="gallery-grid"></div>
+  </div>
+</div>
+
+<!-- SALONS PAGE -->
+<div id="page-salons" class="page" style="padding-top:90px;background:var(--cream);">
+  <div style="max-width:1100px;margin:0 auto;padding:0 24px 80px;">
+    <div class="page-header"><h1 class="section-title">Salon <em>Availability</em></h1><p>Real-time crowd status — find a salon that's ready for you</p></div>
+    <div style="display:flex;gap:18px;justify-content:center;margin-bottom:40px;flex-wrap:wrap;">
+      <div style="display:flex;align-items:center;gap:8px;background:#fff;padding:8px 18px;border-radius:50px;border:1px solid var(--rose-pale);font-size:13px;">🟢 Available</div>
+      <div style="display:flex;align-items:center;gap:8px;background:#fff;padding:8px 18px;border-radius:50px;border:1px solid var(--rose-pale);font-size:13px;">🟡 Moderately Busy</div>
+      <div style="display:flex;align-items:center;gap:8px;background:#fff;padding:8px 18px;border-radius:50px;border:1px solid var(--rose-pale);font-size:13px;">🔴 Very Busy</div>
+    </div>
+    <div class="grid-salons" id="salons-grid"></div>
+  </div>
+</div>
+
+<!-- PROFILE PAGE -->
+<div id="page-profile" class="page" style="padding-top:80px;background:var(--cream);">
+  <div style="max-width:900px;margin:0 auto;padding:0 24px 80px;">
+    <button class="btn btn-outline btn-sm" onclick="showPage('browse')" style="margin-bottom:24px;">← Back</button>
+    <div id="profile-content"></div>
+  </div>
+</div>
+
+<!-- BOOKING PAGE -->
+<div id="page-booking" class="page" style="padding-top:90px;background:var(--cream);">
+  <div style="max-width:680px;margin:0 auto;padding:0 24px 80px;">
+    <div class="page-header"><h1 class="section-title">Book Your <em>Appointment</em></h1><div class="step-indicator" id="booking-step-indicator"></div></div>
+    <div id="booking-content"></div>
+  </div>
+</div>
+
+<!-- CUSTOMER DASHBOARD -->
+<div id="page-dashboard" class="page" style="padding-top:90px;background:var(--cream);">
+  <div style="max-width:900px;margin:0 auto;padding:0 24px 80px;">
+    <div class="dash-header">
+      <div class="dash-avatar-big" id="dash-avatar-big">?</div>
+      <div style="flex:1;"><div class="dash-welcome" id="dash-welcome">Welcome!</div><div class="dash-sub">Here are your bookings</div></div>
+      <button class="btn btn-primary" onclick="showPage('browse')">+ Book Now</button>
+    </div>
+    <div class="grid-4" style="margin-bottom:32px;">
+      <div class="stat-mini"><div class="stat-mini-icon"><i class="fa-solid fa-calendar-days" style="color:var(--rose-dark);"></i></div><div class="stat-mini-val">2</div><div class="stat-mini-label">Upcoming Bookings</div></div>
+<div class="stat-mini"><div class="stat-mini-icon"><i class="fa-solid fa-heart" style="color:var(--rose-dark);"></i></div><div class="stat-mini-val">4</div><div class="stat-mini-label">Saved Braiders</div></div>
+<div class="stat-mini"><div class="stat-mini-icon"><i class="fa-solid fa-star" style="color:var(--gold);"></i></div><div class="stat-mini-val">9</div><div class="stat-mini-label">Reviews Given</div></div>
+<div class="stat-mini"><div class="stat-mini-icon"><i class="fa-solid fa-bookmark" style="color:var(--rose-dark);"></i></div><div class="stat-mini-val">18</div><div class="stat-mini-label">Saved Styles</div></div>
+    </div>
+    <div class="card">
+      <div class="tab-bar">
+        <button class="tab-btn active" id="tab-upcoming" onclick="switchCustomerTab('upcoming')"><i class="fa-solid fa-calendar-days" style="color:var(--rose-dark);"></i> Upcoming</button>
+        <button class="tab-btn" id="tab-past" onclick="switchCustomerTab('past')">📋 Past Bookings</button>
+      </div>
+      <div style="padding:24px;" id="customer-tab-content"></div>
+    </div>
+  </div>
+</div>
+
+<!-- BRAIDER DASHBOARD -->
+<div id="page-braider-dashboard" class="page" style="padding-top:90px;background:var(--cream);">
+  <div style="max-width:900px;margin:0 auto;padding:0 24px 80px;">
+    <div class="dash-header">
+      <div class="dash-avatar-big" id="braider-avatar-big">?</div>
+      <div style="flex:1;"><div class="dash-welcome" id="braider-welcome">Welcome!</div><div class="dash-sub">Manage your appointments</div></div>
+    </div>
+    <div class="grid-4" style="margin-bottom:32px;">
+      <div class="stat-mini"><div class="stat-mini-icon"><i class="fa-solid fa-calendar-days" style="color:var(--rose-dark);"></i></div><div class="stat-mini-val">3</div><div class="stat-mini-label">Upcoming</div></div>
+<div class="stat-mini"><div class="stat-mini-icon"><i class="fa-solid fa-circle-check" style="color:#4CAF50;"></i></div><div class="stat-mini-val">24</div><div class="stat-mini-label">Completed</div></div>
+<div class="stat-mini"><div class="stat-mini-icon"><i class="fa-solid fa-star" style="color:var(--gold);"></i></div><div class="stat-mini-val">4.9</div><div class="stat-mini-label">Your Rating</div></div>
+<div class="stat-mini"><div class="stat-mini-icon"><i class="fa-solid fa-users" style="color:var(--rose-dark);"></i></div><div class="stat-mini-val">38</div><div class="stat-mini-label">Total Clients</div></div>
+    </div>
+    <div class="card">
+      <div class="tab-bar">
+        <button class="tab-btn active" id="braider-tab-upcoming" onclick="switchBraiderTab('upcoming')"><i class="fa-solid fa-calendar-days" style="color:var(--rose-dark);"></i> Upcoming Appointments</button>
+        <button class="tab-btn" id="braider-tab-past" onclick="switchBraiderTab('past')"><i class="fa-solid fa-circle-check" style="color:#4CAF50;"></i> Completed</button>
+      </div>
+      <div style="padding:24px;" id="braider-tab-content"></div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div><div class="footer-logo-text">BraiderConnect</div><p style="font-size:13px;line-height:1.8;">Nairobi's premier platform connecting clients with certified braiding professionals.</p></div>
+      <div><div class="footer-col-title">For Clients</div><div class="footer-link">Find a Braider</div><div class="footer-link">Browse Styles</div><div class="footer-link">Book Appointment</div></div>
+      <div><div class="footer-col-title">For Braiders</div><div class="footer-link">Join as Braider</div><div class="footer-link">Manage Bookings</div><div class="footer-link">Profile Setup</div></div>
+      <div><div class="footer-col-title">Company</div><div class="footer-link">About Us</div><div class="footer-link">How it Works</div><div class="footer-link">Contact</div></div>
+    </div>
+    <div class="footer-bottom"><span>© 2026 BraiderConnect. All rights reserved.</span></div>
+  </div>
+</footer>
+
+<script>
+// ══════════════════════════════════════════
+// DATA
+// ⚠️ REPLACE WITH BACKEND LATER: GET /api/braiders
+// ══════════════════════════════════════════
+const BRAIDERS=[
+  {id:1,name:"Amara Osei",photo:"img/amara.jfif",location:"Westlands, Nairobi",rating:4.9,reviews:142,experience:8,specialties:["Knotless Braids","Goddess Locs","Faux Locs"],doorToDoor:true,status:"available",priceRange:"KSh 2,500 – 8,000",waitingCustomers:1,availableBraiders:2,estimatedWait:"15 min",bio:"Certified master braider with 8 years of experience specializing in protective styles. I offer both salon and home services.",portfolio:[{id:1,style:"Knotless Box Braids",price:"KSh 4,500",img:"https://images.unsplash.com/photo-1592621385612-4d7129426394?w=300&h=300&fit=crop"},{id:2,style:"Goddess Locs",price:"KSh 6,500",img:"https://images.unsplash.com/photo-1610631787813-9eeb1a2386cc?w=300&h=300&fit=crop"},{id:3,style:"Fulani Braids",price:"KSh 3,800",img:"https://images.unsplash.com/photo-1597223557154-721c1cecc4b0?w=300&h=300&fit=crop"},{id:4,style:"Cornrows",price:"KSh 2,500",img:"https://images.unsplash.com/photo-1559600820-62a4ea6bf5c6?w=300&h=300&fit=crop"}],testimonials:["Amara is amazing! My knotless braids lasted 8 weeks.","Very professional and neat work.","Best braider in Nairobi!"]},
+  {id:2,name:"Zara Mensah",photo:"img/zara.jfif",location:"Karen, Nairobi",rating:4.7,reviews:98,experience:5,specialties:["Box Braids","Twists","Senegalese Twists"],doorToDoor:true,status:"busy",priceRange:"KSh 2,000 – 6,500",waitingCustomers:4,availableBraiders:1,estimatedWait:"45 min",bio:"Passionate braider who loves creating beautiful protective styles. Home service available across Nairobi.",portfolio:[{id:1,style:"Box Braids",price:"KSh 3,500",img:"https://images.unsplash.com/photo-1597223557154-721c1cecc4b0?w=300&h=300&fit=crop"},{id:2,style:"Senegalese Twists",price:"KSh 5,000",img:"https://images.unsplash.com/photo-1610631787813-9eeb1a2386cc?w=300&h=300&fit=crop"},{id:3,style:"Two-Strand Twists",price:"KSh 2,800",img:"https://images.unsplash.com/photo-1592621385612-4d7129426394?w=300&h=300&fit=crop"}],testimonials:["Zara's twists are absolutely perfect!","She came to my house and was so professional.","Will definitely book again!"]},
+  {id:3,name:"Keisha Adeola",photo:"img/keisha.jfif",location:"Kilimani, Nairobi",rating:4.8,reviews:211,experience:12,specialties:["Cornrows","Feed-In Braids","Tribal Braids"],doorToDoor:false,status:"full",priceRange:"KSh 1,800 – 5,500",waitingCustomers:7,availableBraiders:0,estimatedWait:"2 hrs",bio:"12-year veteran specializing in cornrow artistry and intricate tribal patterns. Salon only.",portfolio:[{id:1,style:"Feed-In Cornrows",price:"KSh 2,500",img:"https://images.unsplash.com/photo-1559600820-62a4ea6bf5c6?w=300&h=300&fit=crop"},{id:2,style:"Tribal Braids",price:"KSh 4,000",img:"https://images.unsplash.com/photo-1592621385612-4d7129426394?w=300&h=300&fit=crop"},{id:3,style:"Ghana Weaving",price:"KSh 3,200",img:"https://images.unsplash.com/photo-1597223557154-721c1cecc4b0?w=300&h=300&fit=crop"}],testimonials:["Keisha is a true artist!","My cornrows have never looked this perfect.","12 years of experience really shows."]},
+  {id:4,name:"Nadia Kamara",photo:"img/nadia.jfif",location:"Lavington, Nairobi",rating:4.6,reviews:67,experience:3,specialties:["Crochet Braids","Passion Twists","Butterfly Locs"],doorToDoor:true,status:"available",priceRange:"KSh 2,200 – 7,000",waitingCustomers:0,availableBraiders:1,estimatedWait:"Now",bio:"Trend-forward braider specializing in modern protective styles. I bring the salon experience to your doorstep.",portfolio:[{id:1,style:"Butterfly Locs",price:"KSh 6,000",img:"https://images.unsplash.com/photo-1610631787813-9eeb1a2386cc?w=300&h=300&fit=crop"},{id:2,style:"Passion Twists",price:"KSh 5,500",img:"https://images.unsplash.com/photo-1592621385612-4d7129426394?w=300&h=300&fit=crop"}],testimonials:["Nadia's butterfly locs are a work of art!","So gentle with my natural hair.","Fast, neat, and affordable."]}
+];
+
+const STYLES=[
+  {id:1,name:"Knotless Box Braids",price:"From KSh 3,500",img:"img/knotless.jfif",popular:true},
+  {id:2,name:"Goddess Locs",price:"From KSh 5,500",img:"img/goddess.jfif",popular:true},
+  {id:3,name:"Senegalese Twists",price:"From KSh 4,000",img:"img/senegalese.jfif",popular:false},
+  {id:4,name:"Cornrows",price:"From KSh 1,800",img:"img/cornrows.jfif",popular:false},
+  {id:5,name:"Butterfly Locs",price:"From KSh 5,000",img:"img/butterfly.jfif",popular:true},
+  {id:6,name:"Fulani Braids",price:"From KSh 3,200",img:"img/fulani.jfif",popular:false}
+];
+
+const STATUS={
+  available:{emoji:"🟢",label:"Available",color:"#4CAF50"},
+  busy:{emoji:"🟡",label:"Moderately Busy",color:"#FF9800"},
+  full:{emoji:"🔴",label:"Very Busy",color:"#F44336"}
+};
+
+// ══════════════════════════════════════════
+// AI RESPONSES — hardcoded for prototype
+// ⚠️ REPLACE WITH BACKEND LATER:
+//    fetch('/api/ai/style-advice',{method:'POST',
+//    headers:{'Content-Type':'application/json'},
+//    body:JSON.stringify({prompt:input})})
+//    .then(r=>r.json()).then(d=>showResult(d.response))
+// ══════════════════════════════════════════
+const AI_RESPONSES={
+  'low maintenance':'Great choice! Try <strong>Knotless Box Braids</strong> — they last 6–8 weeks with minimal care, just moisturise your edges weekly. <strong>Cornrows</strong> are also excellent; neat, fast to install and easy to maintain with a satin scarf at night. <strong>Senegalese Twists</strong> are another winner — lightweight and long-lasting.',
+  'high maintenance':'<strong>Goddess Locs</strong> give a stunning textured look but need regular moisturising. <strong>Fulani Braids</strong> with accessories look beautiful and intricate — perfect if you love detail. <strong>Butterfly Locs</strong> are trendy and eye-catching but need gentle handling to stay fresh.',
+  'wedding':'For a wedding, go elegant! <strong>Goddess Locs</strong> with gold accessories look breathtaking. <strong>Fulani Braids</strong> with cowrie shells are a stunning traditional-modern mix. <strong>Knotless Box Braids</strong> styled in an updo give a timeless bridal look that photographs beautifully.',
+  'natural':'For a natural effortless vibe try <strong>Two-Strand Twists</strong> — they enhance your natural texture. <strong>Cornrows</strong> laid flat with natural parts look clean and authentic. <strong>Knotless Box Braids</strong> in dark brown blend seamlessly with your own hair.',
+  'office':'Keep it professional with <strong>Feed-In Cornrows</strong> — sleek, neat and appropriate for any workplace. <strong>Knotless Box Braids</strong> styled back are polished and elegant. <strong>Senegalese Twists</strong> in a bun are a great office-ready option that looks refined all day.',
+  'short':'For shorter hair, <strong>Cornrows</strong> work perfectly and add length optically. <strong>Crochet Braids</strong> are ideal — they install quickly and add volume. <strong>Feed-In Braids</strong> blend seamlessly even with shorter natural hair.',
+  'long':'With longer hair you have so many options! <strong>Goddess Locs</strong> look stunning at length. <strong>Senegalese Twists</strong> flow beautifully. <strong>Knotless Box Braids</strong> in a longer length give that effortless bohemian look trending right now.',
+  'default':'We recommend starting with <strong>Knotless Box Braids</strong> — comfortable, natural-looking and perfect for any occasion. If you want something textured, try <strong>Goddess Locs</strong>. For something quick and chic, <strong>Cornrows</strong> are always a timeless choice. Book any of these through BraiderConnect!'
+};
+
+function getAIResponse(input){
+  const l=input.toLowerCase();
+  for(const key of Object.keys(AI_RESPONSES)){
+    if(key!=='default'&&l.includes(key)) return AI_RESPONSES[key];
+  }
+  return AI_RESPONSES['default'];
+}
+
+// ══════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════
+let currentUser=null, selectedRole='customer';
+let selectedBraider=BRAIDERS[0];
+let bookingStep=1, bookingData={serviceType:'salon',style:'',date:'',time:'',address:''};
+let customerTab='upcoming', braiderTab='upcoming';
+
+// ══════════════════════════════════════════
+// AUTH
+// ⚠️ REPLACE WITH BACKEND LATER: all localStorage
+//    becomes fetch() to /api/auth routes
+// ══════════════════════════════════════════
+function restoreSession(){
+  // ⚠️ REPLACE WITH BACKEND LATER: GET /api/auth/me with JWT
+  const s=localStorage.getItem('bc_user');
+  if(s){currentUser=JSON.parse(s);updateNav();}
+}
+
+function openAuth(tab){
+  document.getElementById('auth-modal').classList.add('open');
+  document.body.style.overflow='hidden';
+  switchAuthTab(tab||'signin');
+  clearAuthError();
+}
+
+function closeAuth(){
+  document.getElementById('auth-modal').classList.remove('open');
+  document.body.style.overflow='';
+  clearAuthInputs();
+}
+
+function switchAuthTab(tab){
+  const s=tab==='signin';
+  document.getElementById('tab-signin').classList.toggle('active',s);
+  document.getElementById('tab-signup').classList.toggle('active',!s);
+  document.getElementById('signin-form').style.display=s?'flex':'none';
+  document.getElementById('signup-form').style.display=s?'none':'flex';
+  document.getElementById('auth-modal-title').textContent=s?'Welcome Back':'Create Account';
+  document.getElementById('auth-modal-sub').textContent=s?'Sign in to your BraiderConnect account':"Join Nairobi's #1 braiding platform";
+  document.getElementById('auth-switch-text').innerHTML=s
+    ?"Don't have an account? <span onclick=\"switchAuthTab('signup')\">Create one</span>"
+    :"Already have an account? <span onclick=\"switchAuthTab('signin')\">Sign in</span>";
+  clearAuthError();
+}
+
+function selectRole(role){
+  selectedRole=role;
+  document.getElementById('role-customer').classList.toggle('selected',role==='customer');
+  document.getElementById('role-braider').classList.toggle('selected',role==='braider');
+}
+
+function handleSignIn(){
+  const email=document.getElementById('signin-email').value.trim();
+  const pass=document.getElementById('signin-password').value;
+  if(!email||!pass){showAuthError('Please fill in all fields.');return;}
+  // ⚠️ REPLACE WITH BACKEND LATER: POST /api/auth/signin
+  const users=JSON.parse(localStorage.getItem('bc_users')||'[]');
+  const user=users.find(u=>u.email===email&&u.password===pass);
+  if(!user){showAuthError('No account found. Please create an account first.');return;}
+  currentUser=user;
+  localStorage.setItem('bc_user',JSON.stringify(user)); // ⚠️ REPLACE: store JWT token
+  closeAuth();
+  updateNav();
+  goToDashboard();
+}
+
+function handleSignUp(){
+  const name=document.getElementById('signup-name').value.trim();
+  const email=document.getElementById('signup-email').value.trim();
+  const phone=document.getElementById('signup-phone').value.trim();
+  const pass=document.getElementById('signup-password').value;
+  if(!name||!email||!phone||!pass){showAuthError('Please fill in all fields.');return;}
+  if(pass.length<6){showAuthError('Password must be at least 6 characters.');return;}
+  // ⚠️ REPLACE WITH BACKEND LATER: POST /api/auth/signup
+  const users=JSON.parse(localStorage.getItem('bc_users')||'[]');
+  if(users.find(u=>u.email===email)){showAuthError('An account with this email already exists.');return;}
+  const newUser={id:Date.now(),name,email,phone,
+    password:pass, // ⚠️ REPLACE: hash with bcrypt server-side, never store plain text
+    role:selectedRole,avatar:name[0].toUpperCase()};
+  users.push(newUser);
+  localStorage.setItem('bc_users',JSON.stringify(users));
+  currentUser=newUser;
+  localStorage.setItem('bc_user',JSON.stringify(newUser)); // ⚠️ REPLACE: store JWT token
+  closeAuth();
+  updateNav();
+  goToDashboard();
+}
+
+function handleSignOut(){
+  currentUser=null;
+  // ⚠️ REPLACE WITH BACKEND LATER: POST /api/auth/signout + clear JWT
+  localStorage.removeItem('bc_user');
+  updateNav();
+  showPage('landing');
+}
+
+function goToDashboard(){
+  if(!currentUser){openAuth('signin');return;}
+  if(currentUser.role==='braider'){
+    renderBraiderDashboard();
+    showPage('braider-dashboard');
+  } else {
+    renderCustomerDashboard();
+    showPage('dashboard');
+  }
+}
+
+function updateNav(){
+  const on=!!currentUser;
+  document.getElementById('nav-signin-btn').style.display=on?'none':'';
+  document.getElementById('nav-user-chip').style.display=on?'flex':'none';
+  document.getElementById('nav-signout-btn').style.display=on?'inline-flex':'none';
+  if(on&&currentUser&&currentUser.name){
+    document.getElementById('nav-avatar-letter').textContent=currentUser.name[0].toUpperCase();
+    document.getElementById('nav-user-display').textContent=currentUser.name.split(' ')[0];
+  }
+}
+
+function showAuthError(msg){const e=document.getElementById('auth-error');e.textContent=msg;e.classList.add('show');}
+function clearAuthError(){document.getElementById('auth-error').classList.remove('show');}
+function clearAuthInputs(){
+  ['signin-email','signin-password','signup-name','signup-email','signup-phone','signup-password']
+    .forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  clearAuthError();
+}
+
+// ══════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  const el=document.getElementById('page-'+id);
+  if(el) el.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  document.querySelectorAll('.nav-link').forEach(l=>l.classList.toggle('active',l.dataset.page===id));
+  closeMobileMenu();
+  if(id==='landing') renderLanding();
+  else if(id==='browse') filterBraiders();
+  else if(id==='gallery') renderGallery();
+  else if(id==='salons') renderSalons();
+  else if(id==='booking'){bookingStep=1;bookingData={serviceType:'salon',style:'',date:'',time:'',address:''};renderBooking();}
+}
+
+// ══════════════════════════════════════════
+// HAMBURGER
+// ══════════════════════════════════════════
+function toggleMobileMenu(){document.getElementById('mobile-menu').classList.toggle('open');}
+function closeMobileMenu(){document.getElementById('mobile-menu').classList.remove('open');}
+
+window.addEventListener('click',function(e){
+  const modal=document.getElementById('auth-modal');
+  const menu=document.getElementById('mobile-menu');
+  const ham=document.getElementById('hamburger');
+  if(e.target===modal) closeAuth();
+  if(menu&&ham&&menu.classList.contains('open')&&!menu.contains(e.target)&&!ham.contains(e.target)) closeMobileMenu();
+});
+
+// ══════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════
+function starsHTML(r,sz=14){
+  let s='';
+  for(let i=0;i<5;i++) s+=`<span style="color:${i<Math.floor(r)?'#C9A96E':'#DDD'};font-size:${sz}px;">★</span>`;
+  return s;
+}
+
+function braiderCardHTML(b){
+  const st=STATUS[b.status];
+  return `<div class="card braider-card" onclick="openProfile(${b.id})">
+    <div class="braider-photo-wrap">
+      <img src="${b.photo}" alt="${b.name}" loading="lazy"/>
+      ${b.doorToDoor?'<div style="position:absolute;top:12px;left:12px;"><span class="badge-home">🏠 Home Service</span></div>':''}
+      <div class="braider-status-badge" style="color:${st.color};">${st.emoji} ${st.label}</div>
+    </div>
+    <div class="braider-body">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
+        <div><div style="font-size:17px;font-weight:600;color:var(--charcoal);">${b.name}</div><div style="font-size:12px;color:var(--gray);margin-top:3px;">📍 ${b.location}</div></div>
+        <div style="text-align:right;flex-shrink:0;">
+          <div style="display:flex;align-items:center;gap:4px;">${starsHTML(b.rating)}<span style="font-weight:700;font-size:13px;">${b.rating}</span></div>
+          <div style="font-size:11px;color:var(--gray);">(${b.reviews} reviews)</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 14px;">
+        ${b.specialties.slice(0,2).map(s=>`<span class="tag">${s}</span>`).join('')}
+        ${b.specialties.length>2?`<span class="tag">+${b.specialties.length-2}</span>`:''}
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;">
+        <span style="color:var(--rose-dark);font-weight:600;">${b.priceRange}</span>
+        <span style="color:var(--gray);">${b.experience} yrs exp</span>
+      </div>
+      <div class="braider-wait"><span>⏱ Wait: <strong>${b.estimatedWait}</strong></span><span>👥 ${b.waitingCustomers} waiting</span></div>
+    </div>
+  </div>`;
+}
+
+function styleCardHTML(s){
+  return `<div class="card style-card" onclick="showPage('booking')">
+    <div style="position:relative;">
+      <img src="${s.img}" alt="${s.name}" loading="lazy" style="width:100%;height:180px;object-fit:cover;"/>
+      ${s.popular?'<div style="position:absolute;top:12px;left:12px;"><span class="badge-popular">⭐ POPULAR</span></div>':''}
+    </div>
+    <div style="padding:14px 16px;">
+      <h3 style="font-size:15px;font-weight:600;color:var(--charcoal);margin-bottom:8px;">${s.name}</h3>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span style="color:var(--rose-dark);font-weight:600;font-size:14px;">${s.price}</span>
+        <button class="btn btn-primary btn-sm" onclick="event.stopPropagation();showPage('booking')">Book</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ══════════════════════════════════════════
+// RENDER: LANDING
+// ══════════════════════════════════════════
+function renderLanding(){
+  const sg=document.getElementById('landing-styles');
+  if(sg) sg.innerHTML=STYLES.slice(0,6).map(styleCardHTML).join('');
+  const bg=document.getElementById('landing-braiders');
+  if(bg) bg.innerHTML=BRAIDERS.slice(0,3).map(braiderCardHTML).join('');
+}
+
+// ══════════════════════════════════════════
+// RENDER: BROWSE
+// ══════════════════════════════════════════
+function filterBraiders(){
+  const q=(document.getElementById('search-input')||{}).value?.toLowerCase()||'';
+  const st=(document.getElementById('filter-status')||{}).value||'all';
+  const rt=parseFloat((document.getElementById('filter-rating')||{}).value)||0;
+  const home=(document.getElementById('filter-home')||{}).checked||false;
+  const filtered=BRAIDERS.filter(b=>{
+    if(q&&!b.name.toLowerCase().includes(q)&&!b.location.toLowerCase().includes(q)&&!b.specialties.join(' ').toLowerCase().includes(q)) return false;
+    if(st!=='all'&&b.status!==st) return false;
+    if(home&&!b.doorToDoor) return false;
+    if(b.rating<rt) return false;
+    return true;
+  });
+  const grid=document.getElementById('browse-grid');
+  const count=document.getElementById('browse-count');
+  if(count) count.textContent=`${filtered.length} braider${filtered.length!==1?'s':''} found`;
+  if(grid) grid.innerHTML=filtered.length?filtered.map(braiderCardHTML).join(''):'<div style="grid-column:1/-1;text-align:center;padding:60px 0;color:var(--gray);"><div style="font-size:48px;margin-bottom:16px;">🔍</div><p>No braiders match your filters.</p></div>';
+}
+
+// ══════════════════════════════════════════
+// RENDER: GALLERY
+// ══════════════════════════════════════════
+function renderGallery(){
+  const g=document.getElementById('gallery-grid');
+  if(g) g.innerHTML=STYLES.map(styleCardHTML).join('');
+}
+
+// ══════════════════════════════════════════
+// RENDER: SALONS
+// ══════════════════════════════════════════
+function renderSalons(){
+  const g=document.getElementById('salons-grid');
+  if(!g) return;
+  g.innerHTML=BRAIDERS.map(b=>{
+    const st=STATUS[b.status];
+    const pct=Math.min(100,(b.waitingCustomers/8)*100);
+    const msg=b.status==='available'?'<i class="fa-solid fa-circle-check" style="color:#4CAF50;"></i> Walk-ins welcome!':b.status==='busy'?'<i class="fa-solid fa-calendar-days" style="color:var(--rose-dark);"></i> Booking recommended':'❌ Fully booked today';
+    return `<div class="card">
+      <div style="height:6px;background:linear-gradient(90deg,${st.color} ${pct}%,#F0EDE8 ${pct}%);"></div>
+      <div style="padding:20px 22px;">
+        <div style="display:flex;gap:14px;align-items:center;margin-bottom:16px;">
+          <img style="width:52px;height:52px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid ${st.color};" src="${b.photo}" alt="${b.name}" loading="lazy"/>
+          <div style="flex:1;"><div style="font-weight:600;font-size:16px;color:var(--charcoal);">${b.name}</div><div style="font-size:12px;color:var(--gray);">📍 ${b.location}</div></div>
+          <div style="font-size:24px;">${st.emoji}</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px;">
+          <div class="stat-mini"><div class="stat-mini-val">${b.waitingCustomers}</div><div class="stat-mini-label">Waiting</div></div>
+          <div class="stat-mini"><div class="stat-mini-val">${b.availableBraiders}</div><div class="stat-mini-label">Available</div></div>
+          <div class="stat-mini"><div class="stat-mini-val" style="font-size:14px;">${b.estimatedWait}</div><div class="stat-mini-label">Est. Wait</div></div>
+        </div>
+        <div style="margin-bottom:12px;"><div style="font-size:11px;color:var(--gray);margin-bottom:6px;">Capacity</div><div style="height:6px;background:var(--light);border-radius:3px;overflow:hidden;"><div style="height:100%;width:${pct}%;background:${st.color};border-radius:3px;"></div></div></div>
+        <div style="font-size:12px;color:var(--gray);font-weight:500;">${msg}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════
+// RENDER: PROFILE
+// ══════════════════════════════════════════
+function openProfile(id){
+  selectedBraider=BRAIDERS.find(b=>b.id===id)||BRAIDERS[0];
+  renderProfile();
+  showPage('profile');
+}
+
+function renderProfile(){
+  const b=selectedBraider, st=STATUS[b.status];
+  const el=document.getElementById('profile-content');
+  if(!el) return;
+  el.innerHTML=`
+  <div class="card" style="margin-bottom:28px;">
+    <div class="profile-cover"></div>
+    <div class="profile-header">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px;">
+        <div style="display:flex;align-items:flex-end;gap:20px;flex-wrap:wrap;">
+          <img class="profile-avatar" src="${b.photo}" alt="${b.name}"/>
+          <div style="padding-bottom:8px;">
+            <div style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:600;color:var(--charcoal);margin-bottom:4px;">${b.name}</div>
+            <div style="font-size:13px;color:var(--gray);margin-bottom:6px;">📍 ${b.location} · ${b.experience} years experience</div>
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+              ${starsHTML(b.rating,16)}<span style="font-weight:700;">${b.rating}</span>
+              <span style="font-size:13px;color:var(--gray);">(${b.reviews} reviews)</span>
+              <span style="font-size:13px;color:${st.color};font-weight:600;">${st.emoji} ${st.label}</span>
+            </div>
+          </div>
+        </div>
+        <button class="btn btn-primary" onclick="showPage('booking')">Book Now</button>
+      </div>
+      <p style="margin-top:20px;font-size:15px;color:var(--gray);line-height:1.75;">${b.bio}</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;">
+        ${b.specialties.map(s=>`<span class="tag">${s}</span>`).join('')}
+        ${b.doorToDoor?'<span class="badge-home">🏠 Home Service Available</span>':''}
+      </div>
+    </div>
+  </div>
+  <div class="card" style="padding:24px;margin-bottom:28px;">
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--charcoal);margin-bottom:16px;">Live Availability</h2>
+    <div class="grid-4">
+      <div class="stat-mini"><div class="stat-mini-icon">👥</div><div class="stat-mini-val">${b.waitingCustomers}</div><div class="stat-mini-label">Customers Waiting</div></div>
+      <div class="stat-mini"><div class="stat-mini-icon"><i class="fa-solid fa-scissors" style="color:var(--rose-dark);font-size:28px;"></i></div><div class="stat-mini-val">${b.availableBraiders}</div><div class="stat-mini-label">Available</div></div>
+      <div class="stat-mini"><div class="stat-mini-icon">⏱</div><div class="stat-mini-val" style="font-size:14px;">${b.estimatedWait}</div><div class="stat-mini-label">Est. Wait</div></div>
+      <div class="stat-mini"><div class="stat-mini-icon">💰</div><div class="stat-mini-val" style="font-size:12px;">${b.priceRange}</div><div class="stat-mini-label">Price Range</div></div>
+    </div>
+  </div>
+  <div class="card" style="padding:24px;margin-bottom:28px;">
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--charcoal);margin-bottom:16px;">Style Portfolio</h2>
+    <div class="grid-portfolio">
+      ${b.portfolio.map(p=>`<div class="card" style="cursor:pointer;border-radius:14px;" onclick="openLightbox('${p.img}')">
+        <img src="${p.img}" alt="${p.style}" style="width:100%;height:130px;object-fit:cover;" loading="lazy"/>
+        <div style="padding:10px 12px;"><div style="font-size:13px;font-weight:600;color:var(--charcoal);">${p.style}</div><div style="font-size:12px;color:var(--rose-dark);font-weight:500;margin-top:3px;">${p.price}</div></div>
+      </div>`).join('')}
+    </div>
+  </div>
+  <div class="card" style="padding:24px;">
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--charcoal);margin-bottom:16px;">Customer Reviews</h2>
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      ${b.testimonials.map((t,i)=>`<div class="review-card">
+        <div class="review-avatar">${['A','B','C'][i]}</div>
+        <div><div style="margin-bottom:4px;">${starsHTML(5,12)}</div><div style="font-size:14px;color:var(--charcoal);line-height:1.65;">${t}</div></div>
+      </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+// ══════════════════════════════════════════
+// BOOKING WIZARD
+// ══════════════════════════════════════════
+function renderBooking(){
+  // render step dots
+  const si=document.getElementById('booking-step-indicator');
+  if(si) si.innerHTML=[1,2,3].map((s,i)=>{
+    const c=s<bookingStep?'done':s===bookingStep?'active':'pending';
+    return `<div class="step-dot ${c}">${s}</div>${i<2?`<div class="step-line ${s<bookingStep?'done':''}"></div>`:''}`;
+  }).join('');
+  const el=document.getElementById('booking-content');
+  if(!el) return;
+  if(bookingStep===1) el.innerHTML=bStep1();
+  else if(bookingStep===2) el.innerHTML=bStep2();
+  else if(bookingStep===3) el.innerHTML=bStep3();
+}
+
+function bStep1(){
+  const b=selectedBraider;
+  return `<div class="booking-panel" style="display:flex;gap:16px;align-items:center;">
+    <img src="${b.photo}" alt="${b.name}" style="width:60px;height:60px;border-radius:50%;object-fit:cover;flex-shrink:0;"/>
+    <div><div style="font-weight:600;font-size:16px;">${b.name}</div><div style="font-size:12px;color:var(--gray);">📍 ${b.location}</div><div>${starsHTML(b.rating)} <span style="font-size:12px;color:var(--gray);">${b.rating}</span></div></div>
+  </div>
+  <div class="booking-panel"><h3>Service Type</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+      <div class="service-option ${bookingData.serviceType==='salon'?'selected':''}" onclick="selectService('salon')"><div class="opt-icon"><i class="fa-solid fa-scissors" style="color:var(--rose-dark);font-size:28px;"></i></div><div class="opt-label">In Salon</div><div class="opt-desc">Visit the salon</div></div>
+      <div class="service-option ${bookingData.serviceType==='home'?'selected':''}" onclick="selectService('home')"><div class="opt-icon">🏠</div><div class="opt-label">Home Service</div><div class="opt-desc">Braider comes to you</div></div>
+    </div>
+  </div>
+  <div class="booking-panel"><h3>Choose a Style</h3>
+    <select onchange="bookingData.style=this.value"><option value="">Select a hairstyle...</option>${STYLES.map(s=>`<option value="${s.name}" ${bookingData.style===s.name?'selected':''}>${s.name} — ${s.price}</option>`).join('')}</select>
+  </div>
+  ${bookingData.serviceType==='home'?`<div class="booking-panel"><h3>Your Address</h3><input type="text" value="${bookingData.address}" oninput="bookingData.address=this.value" placeholder="Enter your full address..."/></div>`:''}
+  <button class="btn btn-primary" style="width:100%;padding:15px;justify-content:center;" onclick="nextBStep(1)">Continue →</button>`;
+}
+
+function bStep2(){
+  return `<div class="booking-panel"><h3>Choose Date & Time</h3>
+    <div class="form-grid-2">
+      <div><label>Date</label><input type="date" value="${bookingData.date}" onchange="bookingData.date=this.value"/></div>
+      <div><label>Time</label><select onchange="bookingData.time=this.value"><option value="">Select time...</option>${["8:00 AM","9:00 AM","10:00 AM","11:00 AM","12:00 PM","1:00 PM","2:00 PM","3:00 PM","4:00 PM"].map(t=>`<option value="${t}" ${bookingData.time===t?'selected':''}>${t}</option>`).join('')}</select></div>
+    </div>
+  </div>
+  <div style="display:flex;gap:12px;">
+    <button class="btn btn-outline" onclick="prevBStep()">← Back</button>
+    <button class="btn btn-primary" style="flex:1;padding:15px;justify-content:center;" onclick="nextBStep(2)">Continue →</button>
+  </div>`;
+}
+
+function bStep3(){
+  const b=selectedBraider;
+  const rows=[['Braider',b.name],['Style',bookingData.style||'Not selected'],['Service',bookingData.serviceType==='salon'?'In Salon':'Home Service'],...(bookingData.serviceType==='home'?[['Address',bookingData.address||'Not provided']]:[]),['Date',bookingData.date],['Time',bookingData.time]];
+  return `<div class="booking-panel"><h3>Confirm Your Booking</h3>${rows.map(([k,v])=>`<div class="booking-row"><span class="booking-row-key">${k}</span><span class="booking-row-val">${v}</span></div>`).join('')}</div>
+  <div style="display:flex;gap:12px;">
+    <button class="btn btn-outline" onclick="prevBStep()">← Back</button>
+    <button class="btn btn-primary" style="flex:1;padding:15px;justify-content:center;" onclick="confirmBooking()"> Confirm Booking</button>
+  </div>`;
+}
+
+function selectService(t){bookingData.serviceType=t;renderBooking();}
+
+function nextBStep(from){
+  if(from===1){
+    if(!bookingData.style){alert('Please select a hairstyle.');return;}
+    bookingStep=2;
+  } else if(from===2){
+    const d=document.querySelector('#page-booking input[type=date]');
+    const t=document.querySelector('#page-booking select');
+    if(d) bookingData.date=d.value;
+    if(t) bookingData.time=t.value;
+    if(!bookingData.date||!bookingData.time){alert('Please select date and time.');return;}
+    bookingStep=3;
+  }
+  renderBooking();
+}
+
+function prevBStep(){bookingStep=Math.max(1,bookingStep-1);renderBooking();}
+
+function confirmBooking(){
+  const el=document.getElementById('booking-content');
+  document.getElementById('booking-step-indicator').innerHTML='';
+  el.innerHTML=`<div class="confirmation-card">
+    <span class="conf-icon"><i class="fa-solid fa-circle-check conf-icon" style="font-size:64px;color:var(--rose-dark);margin-bottom:20px;display:block;animation:float 3s ease-in-out infinite;"></i></span>
+    <div class="conf-title">Booking Made!</div>
+    <p class="conf-sub">Your appointment with ${selectedBraider.name} has been submitted successfully.</p>
+    <div style="background:var(--cream);border-radius:16px;padding:20px;margin-bottom:28px;text-align:left;">
+      ${[['Braider',selectedBraider.name],['Style',bookingData.style],['Service',bookingData.serviceType==='salon'?'In Salon':'Home Service'],['Date',bookingData.date],['Time',bookingData.time]].map(([k,v])=>`<div class="booking-row"><span class="booking-row-key">${k}</span><span class="booking-row-val">${v}</span></div>`).join('')}
+    </div>
+    <button class="btn btn-primary" style="width:100%;padding:14px;justify-content:center;" onclick="showPage('landing')">Back to Home</button>
+  </div>`;
+}
+
+// ══════════════════════════════════════════
+// CUSTOMER DASHBOARD
+// ⚠️ REPLACE WITH BACKEND LATER: GET /api/bookings?role=customer
+// ══════════════════════════════════════════
+function renderCustomerDashboard(){
+  const name=currentUser?currentUser.name.split(' ')[0]:'there';
+  const av=currentUser?currentUser.name[0].toUpperCase():'?';
+  const w=document.getElementById('dash-welcome');
+  const a=document.getElementById('dash-avatar-big');
+   if(w) w.textContent=`Welcome back, ${name}! 👋`;
+  if(a) a.textContent=av;
+  renderCustomerTab();
+}
+
+function switchCustomerTab(tab){
+  customerTab=tab;
+  document.getElementById('tab-upcoming').classList.toggle('active',tab==='upcoming');
+  document.getElementById('tab-past').classList.toggle('active',tab==='past');
+  renderCustomerTab();
+}
+
+function renderCustomerTab(){
+  const el=document.getElementById('customer-tab-content');
+  if(!el) return;
+  // ⚠️ REPLACE WITH BACKEND LATER: GET /api/bookings?status=upcoming or past
+  const upcoming=[
+    {name:"Amara Osei",style:"Knotless Box Braids",date:"Mar 28, 2026",time:"10:00 AM",status:"confirmed"},
+    {name:"Nadia Kamara",style:"Butterfly Locs",date:"Apr 5, 2026",time:"2:00 PM",status:"pending"}
+  ];
+  const past=[
+    {name:"Zara Mensah",style:"Senegalese Twists",date:"Feb 14, 2026",rated:true},
+    {name:"Keisha Adeola",style:"Cornrows",date:"Jan 20, 2026",rated:false}
+  ];
+  const list=customerTab==='upcoming'?upcoming:past;
+  el.innerHTML=list.map(item=>`<div class="booking-list-item">
+    <div class="booking-item-avatar">${item.name[0]}</div>
+    <div class="booking-item-info"><div class="booking-item-name">${item.name}</div><div class="booking-item-sub">${item.style}</div><div class="booking-item-sub">${item.date}${item.time?' · '+item.time:''}</div></div>
+    <div style="text-align:right;">
+      ${customerTab==='upcoming'?`<div style="font-size:11px;font-weight:600;color:${item.status==='confirmed'?'#4CAF50':'#FF9800'}">${item.status==='confirmed'?'<i class="fa-solid fa-circle-check" style="color:#4CAF50;"></i> Confirmed':'<i class="fa-solid fa-clock" style="color:#FF9800;"></i> Pending'}</div>`:''}
+      ${customerTab==='past'&&!item.rated?`<button class="btn btn-primary btn-sm" style="margin-top:4px;">Rate Now</button>`:''}
+      ${customerTab==='past'&&item.rated?`<div style="font-size:11px;color:var(--gold);">★★★★★ Rated</div>`:''}
+    </div>
+  </div>`).join('');
+}
+
+// ══════════════════════════════════════════
+// BRAIDER DASHBOARD
+// ⚠️ REPLACE WITH BACKEND LATER: GET /api/appointments?role=braider
+// ══════════════════════════════════════════
+function renderBraiderDashboard(){
+  const name=currentUser?currentUser.name.split(' ')[0]:'there';
+  const av=currentUser?currentUser.name[0].toUpperCase():'?';
+  const w=document.getElementById('braider-welcome');
+  const a=document.getElementById('braider-avatar-big');
+  if(w) w.textContent=`Welcome, ${name}! 👋`;
+  if(a) a.textContent=av;
+  renderBraiderTab();
+}
+
+function switchBraiderTab(tab){
+  braiderTab=tab;
+  document.getElementById('braider-tab-upcoming').classList.toggle('active',tab==='upcoming');
+  document.getElementById('braider-tab-past').classList.toggle('active',tab==='past');
+  renderBraiderTab();
+}
+
+function renderBraiderTab(){
+  const el=document.getElementById('braider-tab-content');
+  if(!el) return;
+  // ⚠️ REPLACE WITH BACKEND LATER: GET /api/appointments?status=upcoming or completed
+  const upcoming=[
+    {client:"Fatima M.",style:"Knotless Box Braids",date:"Mar 28, 2026",time:"10:00 AM",service:"In Salon"},
+    {client:"Wanjiku N.",style:"Goddess Locs",date:"Apr 5, 2026",time:"2:00 PM",service:"Home Service"},
+    {client:"Aisha K.",style:"Cornrows",date:"Apr 8, 2026",time:"11:00 AM",service:"In Salon"}
+  ];
+  const past=[
+    {client:"Linda O.",style:"Senegalese Twists",date:"Feb 14, 2026",rating:5},
+    {client:"Mary W.",style:"Box Braids",date:"Jan 20, 2026",rating:4},
+    {client:"Grace N.",style:"Butterfly Locs",date:"Jan 10, 2026",rating:5}
+  ];
+  const list=braiderTab==='upcoming'?upcoming:past;
+  el.innerHTML=list.map(item=>`<div class="booking-list-item">
+    <div class="booking-item-avatar">${item.client[0]}</div>
+    <div class="booking-item-info"><div class="booking-item-name">${item.client}</div><div class="booking-item-sub">${item.style}</div><div class="booking-item-sub">${item.date}${item.time?' · '+item.time:''}${item.service?' · '+item.service:''}</div></div>
+    <div style="text-align:right;">
+      ${braiderTab==='upcoming'?'<div style="font-size:11px;font-weight:600;color:#4CAF50;"><i class="fa-solid fa-circle-check" style="color:#4CAF50;"></i> Confirmed</div>':''}
+      ${braiderTab==='past'?`<div style="font-size:11px;color:var(--gold);">${'★'.repeat(item.rating)}${'☆'.repeat(5-item.rating)} Client rated</div>`:''}
+    </div>
+  </div>`).join('');
+}
+
+// ══════════════════════════════════════════
+// AI — hardcoded responses with fake typing delay
+// ⚠️ REPLACE WITH BACKEND LATER:
+//    fetch('/api/ai/style-advice',{method:'POST',
+//    headers:{'Content-Type':'application/json'},
+//    body:JSON.stringify({prompt:input})})
+//    .then(r=>r.json()).then(d=>{el.innerHTML=d.response})
+// ══════════════════════════════════════════
+function runAI(inputId, resultId){
+  const input=document.getElementById(inputId).value.trim();
+  if(!input) return;
+  const el=document.getElementById(resultId);
+  el.innerHTML=`<div class="ai-loading"><div class="ai-spinner"></div>Finding your perfect styles...</div>`;
+  setTimeout(()=>{el.innerHTML=`<div class="ai-result">${getAIResponse(input)}</div>`;},800);
+}
+function heroAI(){ runAI('hero-ai-input','hero-ai-result'); }
+function galleryAI(){ runAI('gallery-ai-input','gallery-ai-result'); }
+
+// ══════════════════════════════════════════
+// LIGHTBOX
+// ══════════════════════════════════════════
+function openLightbox(src){document.getElementById('lightbox-img').src=src;document.getElementById('lightbox').classList.add('open');document.body.style.overflow='hidden';}
+function closeLightbox(){document.getElementById('lightbox').classList.remove('open');document.body.style.overflow='';}
+
+// ══════════════════════════════════════════
+// NAVBAR SCROLL
+// ══════════════════════════════════════════
+window.addEventListener('scroll',()=>{document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>20);});
+
+// ══════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════
+restoreSession();
+renderLanding();
+</script>
+</body>
+</html>
