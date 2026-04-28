@@ -240,18 +240,19 @@ footer{background:var(--charcoal);color:rgba(255,255,255,0.65);padding:56px 24px
   .dash-header{padding:20px;}
   .confirmation-card{padding:32px 20px;}
   .form-grid-2{grid-template-columns:1fr;}
-  #nav-signout-btn{padding:8px 12px;font-size:11px;}
-  #nav-user-chip{ display:none !important; }
-#nav-signout-btn{ display:inline-flex !important; padding:8px 14px; font-size:12px; }
+  #nav-book-btn{padding:10px 16px;font-size:13px;}
+#nav-signout-btn{padding:8px 12px;font-size:11px;}
+#nav-user-chip{display:none !important;}
 }
 @media(max-width:480px){
   .grid-braiders{grid-template-columns:1fr;}
   .grid-styles{grid-template-columns:1fr 1fr;}
   .grid-4{grid-template-columns:1fr 1fr;}
   #nav-book-btn{display:none;}
-  #nav-signout-btn{padding:8px 12px;font-size:11px;}
-  #nav-user-chip{ display:none !important; }
-#nav-signout-btn{ display:inline-flex !important; padding:8px 14px; font-size:12px; }
+  #nav-book-btn{padding:10px 16px;font-size:13px;}
+#nav-signout-btn{padding:8px 12px;font-size:11px;}
+#nav-user-chip{display:none !important;}
+  
 }
 </style>
 </head>
@@ -540,7 +541,7 @@ footer{background:var(--charcoal);color:rgba(255,255,255,0.65);padding:56px 24px
       <div><div class="footer-col-title">For Braiders</div><div class="footer-link">Join as Braider</div><div class="footer-link">Manage Bookings</div><div class="footer-link">Profile Setup</div></div>
       <div><div class="footer-col-title">Company</div><div class="footer-link">About Us</div><div class="footer-link">How it Works</div><div class="footer-link">Contact</div></div>
     </div>
-    <div class="footer-bottom"><span>© 2026 BraiderConnect. All rights reserved.</span></div>
+    <div class="footer-bottom"><span>© 2026 BraiderConnect. All rights reserved.</span><span>Designed & Built by <strong style="color:#fff;">Linda Riziki</strong></span></div>
   </div>
 </footer>
 
@@ -715,6 +716,8 @@ function updateNav(){
     document.getElementById('nav-avatar-letter').textContent=currentUser.name[0].toUpperCase();
     document.getElementById('nav-user-display').textContent=currentUser.name.split(' ')[0];
   }
+  const ms=document.getElementById('mobile-signout-btn');
+if(ms) ms.style.display=on?'block':'none';
 }
 
 function showAuthError(msg){const e=document.getElementById('auth-error');e.textContent=msg;e.classList.add('show');}
@@ -1060,6 +1063,7 @@ function switchCustomerTab(tab){
   renderCustomerTab();
 }
 
+
 function renderCustomerTab(){
   const el=document.getElementById('customer-tab-content');
   if(!el) return;
@@ -1069,20 +1073,75 @@ function renderCustomerTab(){
     {name:"Nadia Kamara",style:"Butterfly Locs",date:"Apr 5, 2026",time:"2:00 PM",status:"pending"}
   ];
   const past=[
-    {name:"Zara Mensah",style:"Senegalese Twists",date:"Feb 14, 2026",rated:true},
+    {name:"Zara Mensah",style:"Senegalese Twists",date:"Feb 14, 2026",rated:true,ratingGiven:5},
     {name:"Keisha Adeola",style:"Cornrows",date:"Jan 20, 2026",rated:false}
   ];
   const list=customerTab==='upcoming'?upcoming:past;
-  el.innerHTML=list.map(item=>`<div class="booking-list-item">
+el.innerHTML=list.map((item,index)=>{
+  const alreadyRated = item.rated || ratingsGiven[index] !== undefined;
+  const givenStars = ratingsGiven[index] !== undefined ? ratingsGiven[index] : item.ratingGiven;
+  return `<div class="booking-list-item">
     <div class="booking-item-avatar">${item.name[0]}</div>
-    <div class="booking-item-info"><div class="booking-item-name">${item.name}</div><div class="booking-item-sub">${item.style}</div><div class="booking-item-sub">${item.date}${item.time?' · '+item.time:''}</div></div>
-    <div style="text-align:right;">
-      ${customerTab==='upcoming'?`<div style="font-size:11px;font-weight:600;color:${item.status==='confirmed'?'#4CAF50':'#FF9800'}">${item.status==='confirmed'?'<i class="fa-solid fa-circle-check" style="color:#4CAF50;"></i> Confirmed':'<i class="fa-solid fa-clock" style="color:#FF9800;"></i> Pending'}</div>`:''}
-      ${customerTab==='past'&&!item.rated?`<button class="btn btn-primary btn-sm" style="margin-top:4px;">Rate Now</button>`:''}
-      ${customerTab==='past'&&item.rated?`<div style="font-size:11px;color:var(--gold);">★★★★★ Rated</div>`:''}
+    <div class="booking-item-info">
+      <div class="booking-item-name">${item.name}</div>
+      <div class="booking-item-sub">${item.style}</div>
+      <div class="booking-item-sub">${item.date}${item.time?' · '+item.time:''}</div>
     </div>
-  </div>`).join('');
+    <div style="text-align:right;">
+      ${customerTab==='upcoming'?`<div style="font-size:11px;font-weight:600;color:${item.status==='confirmed'?'#4CAF50':'#FF9800'}">${item.status==='confirmed'?'<i class="fa-solid fa-circle-check"></i> Confirmed':'<i class="fa-solid fa-clock"></i> Pending'}</div>`:''}
+      ${customerTab==='past'&&alreadyRated?`<div style="font-size:11px;color:var(--gold);">${'<i class="fa-solid fa-star"></i>'.repeat(givenStars)} Rated</div>`:''}
+      ${customerTab==='past'&&!alreadyRated?`<button class="btn btn-primary btn-sm" style="margin-top:4px;" onclick="openRatingModal('${item.name}','${item.style}',${index})">Rate Now</button>`:''}
+    </div>
+  </div>`;
+}).join('');
 }
+
+// ── RATING MODAL ──────────────────────────────────────────────
+let selectedStar=0;
+let ratingTargetIndex=null;
+let ratingsGiven={};
+
+function openRatingModal(name, style, index){
+  ratingTargetIndex=index;
+  selectedStar=0;
+  document.getElementById('rating-modal-title').textContent=`Rate ${name}`;
+  document.getElementById('rating-modal-sub').textContent=style;
+  document.getElementById('rating-comment').value='';
+  resetStars();
+  document.getElementById('rating-modal').style.display='flex';
+  document.body.style.overflow='hidden';
+}
+
+function closeRatingModal(){
+  document.getElementById('rating-modal').style.display='none';
+  document.body.style.overflow='';
+}
+
+function selectStar(num){
+  selectedStar=num;
+  for(let i=1;i<=5;i++){
+    document.getElementById('star-'+i).style.color=i<=num?'#C9A96E':'#DDD';
+  }
+}
+
+function resetStars(){
+  for(let i=1;i<=5;i++){
+    document.getElementById('star-'+i).style.color='#DDD';
+  }
+}
+
+function submitRating(){
+  if(selectedStar===0){alert('Please select a star rating.');return;}
+  ratingsGiven[ratingTargetIndex]=selectedStar;
+  closeRatingModal();
+  // ⚠️ REPLACE WITH BACKEND LATER: POST /api/ratings
+  renderCustomerTab();
+}
+
+// close rating modal on backdrop click
+document.getElementById('rating-modal').addEventListener('click',function(e){
+  if(e.target===this) closeRatingModal();
+});
 
 // ══════════════════════════════════════════
 // BRAIDER DASHBOARD
@@ -1165,5 +1224,24 @@ window.addEventListener('scroll',()=>{document.getElementById('navbar').classLis
 restoreSession();
 renderLanding();
 </script>
+<div id="rating-modal" style="display:none;position:fixed;inset:0;z-index:2000;background:rgba(44,44,44,0.55);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:24px;overflow-y:auto;">
+  <div style="background:#fff;border-radius:24px;padding:36px;width:100%;max-width:400px;box-shadow:0 24px 64px rgba(200,105,122,0.22);animation:fadeUp 0.4s ease both;position:relative;text-align:center;">
+    <button onclick="closeRatingModal()" style="position:absolute;top:16px;right:20px;background:none;border:none;font-size:20px;cursor:pointer;color:var(--gray);">✕</button>
+    <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#E8A0A8,#C4B5D6);display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;margin:0 auto 16px;">
+      <i class="fa-solid fa-star"></i>
+    </div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;color:var(--charcoal);margin-bottom:6px;" id="rating-modal-title">Rate your braider</div>
+    <div style="font-size:13px;color:var(--gray);margin-bottom:24px;" id="rating-modal-sub">How was your experience?</div>
+    <div style="display:flex;justify-content:center;gap:10px;margin-bottom:24px;" id="rating-stars">
+      <i class="fa-solid fa-star" onclick="selectStar(1)" id="star-1" style="font-size:36px;color:#DDD;cursor:pointer;transition:color 0.2s;"></i>
+      <i class="fa-solid fa-star" onclick="selectStar(2)" id="star-2" style="font-size:36px;color:#DDD;cursor:pointer;transition:color 0.2s;"></i>
+      <i class="fa-solid fa-star" onclick="selectStar(3)" id="star-3" style="font-size:36px;color:#DDD;cursor:pointer;transition:color 0.2s;"></i>
+      <i class="fa-solid fa-star" onclick="selectStar(4)" id="star-4" style="font-size:36px;color:#DDD;cursor:pointer;transition:color 0.2s;"></i>
+      <i class="fa-solid fa-star" onclick="selectStar(5)" id="star-5" style="font-size:36px;color:#DDD;cursor:pointer;transition:color 0.2s;"></i>
+    </div>
+    <textarea id="rating-comment" placeholder="Leave a comment (optional)..." style="border-radius:12px;resize:none;height:90px;margin-bottom:20px;"></textarea>
+    <button class="btn btn-primary" style="width:100%;padding:14px;justify-content:center;" onclick="submitRating()">Submit Rating</button>
+  </div>
+</div>
 </body>
 </html>
